@@ -15,20 +15,45 @@ import android.widget.Toast;
  * @UpdateDate: 2021/1/6
  */
 public class FloatView extends DragViewLayout {
-
+    private ImageView floatImageView;
+    private OnFloatViewIconClickListener onFloatViewIconClickListener;
     public FloatView(final Context context, final int floatImgId) {
         super(context);
         setClickable(true);
-        final ImageView floatView = new ImageView(context);
-        floatView.setImageResource(floatImgId);
-        floatView.setOnClickListener(new OnClickListener() {
+        floatImageView = new ImageView(context);
+        floatImageView.setImageResource(floatImgId);
+        floatImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "点击了悬浮球", Toast.LENGTH_SHORT).show();
+                if (onFloatViewIconClickListener != null){
+                    onFloatViewIconClickListener.onFloatViewClick();
+                }
             }
         });
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        addView(floatView, params);
+        addView(floatImageView, params);
+    }
+
+    /**
+     * 提供接口用于修改图标
+     * @param resId
+     */
+    public void setFloatViewIcon(int resId){
+        floatImageView.setImageResource(resId);
+    }
+
+    /**
+     * 图标点击接口
+     */
+    public interface OnFloatViewIconClickListener{
+        void onFloatViewClick();
+    }
+    /**
+     * 设置点击事件
+     * @param clickListener
+     */
+    public void setOnFloatViewIconClickListener(OnFloatViewIconClickListener clickListener){
+        this.onFloatViewIconClickListener = clickListener;
     }
 }
 
