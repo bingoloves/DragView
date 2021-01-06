@@ -161,8 +161,11 @@ public class DragViewLayout extends RelativeLayout {
      * 本实例只允许添加一个
      */
     private boolean isAdded = false;
-    //悬浮球显示
-    public synchronized void show() {
+
+    /**
+     * 悬浮球显示
+     */
+    public void show() {
         if (!isAdded){
             floatLayoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.FIRST_SUB_WINDOW,
@@ -175,9 +178,24 @@ public class DragViewLayout extends RelativeLayout {
             mWindowManager.addView(this, floatLayoutParams);
             isAdded = true;
         }
+        if (getVisibility() == GONE){
+            setVisibility(VISIBLE);
+        }
     }
 
-    public synchronized void dismiss() {
+    /**
+     * 隐藏
+     */
+    public void dismiss() {
+        if (isAdded && getVisibility() == VISIBLE){
+            setVisibility(GONE);
+        }
+    }
+
+    /**
+     * 销毁
+     */
+    public void destroy() {
         if (isAdded){
             mWindowManager.removeView(this);
             isAdded = false;
